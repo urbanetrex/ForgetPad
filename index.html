@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The ForgetPad</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      padding: 2rem;
+    }
+    textarea {
+      width: 100%;
+      height: 70vh;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-size: 1rem;
+      padding: 1rem;
+      resize: none;
+    }
+    #controls {
+      margin-top: 1rem;
+    }
+    button {
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 1rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 The ForgetPad</h1>
+  <textarea id="pad" placeholder="Start typing... it won't last long."></textarea>
+  
+  <div id="controls">
+    <button id="fakeSave">💾 Save</button>
+  </div>
+  
+  <div id="status">Auto-wiping in 10s</div>
+
+  <script>
+    const pad = document.getElementById("pad");
+    const status = document.getElementById("status");
+    const fakeSave = document.getElementById("fakeSave");
+
+    let frozen = false;
+    let timeLeft = 10;
+
+    // save button prank
+    fakeSave.addEventListener("click", () => {
+      alert("You thought that would work?");
+    });
+
+    // auto-wipe logic
+    function countdown() {
+      if (!frozen) {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          pad.value = "";
+          timeLeft = 10;
+          status.textContent = "💥 Memory wiped.";
+        } else {
+          status.textContent = `Auto-wiping in ${timeLeft}s`;
+        }
+      } else {
+        status.textContent = "⏸️ Frozen — nothing will be forgotten.";
+      }
+    }
+
+    setInterval(countdown, 1000);
+
+    // secret combo detection (Ctrl + Shift + R + N)
+    let keysPressed = new Set();
+
+    window.addEventListener("keydown", (e) => {
+      keysPressed.add(e.key.toLowerCase());
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        keysPressed.has("r") &&
+        keysPressed.has("n")
+      ) {
+        frozen = !frozen;
+        if (frozen) {
+          status.textContent = "⏸️ Frozen — nothing will be forgotten.";
+        } else {
+          status.textContent = `Auto-wiping in ${timeLeft}s`;
+        }
+        keysPressed.clear(); // reset
+        e.preventDefault();
+      }
+    });
+
+    window.addEventListener("keyup", (e) => {
+      keysPressed.delete(e.key.toLowerCase());
+    });
+  </script>
+</body>
+</html>
