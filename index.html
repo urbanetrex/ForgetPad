@@ -77,14 +77,13 @@
 
     setInterval(countdown, 1000);
 
-    // secret combo detection (Ctrl + Shift + R + N)
     let keysPressed = new Set();
 
     window.addEventListener("keydown", (e) => {
       keysPressed.add(e.key.toLowerCase());
 
       if (
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "r")
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "t")
       ) {
         frozen = !frozen;
         if (frozen) {
