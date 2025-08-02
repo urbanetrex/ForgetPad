@@ -82,9 +82,7 @@
     window.addEventListener("keydown", (e) => {
       keysPressed.add(e.key.toLowerCase());
 
-      if (
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "q")
-      ) {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "q") { // Fixed part. You may have accidentally added another `if` here.
         frozen = !frozen;
         if (frozen) {
           status.textContent = "⏸️ Frozen — nothing will be forgotten.";
