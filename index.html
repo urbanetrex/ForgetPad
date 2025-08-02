@@ -63,20 +63,35 @@
     });
 
     // auto-wipe logic
-    function countdown() {
-      if (!frozen) {
-        timeLeft--;
-        if (timeLeft <= 0) {
-          pad.value = "";
-          timeLeft = 10;
-          status.textContent = "💥 Memory wiped.";
+function countdown() {
+  if (!frozen) {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      pad.disabled = true;
+      let count=1;
+      status.textContent = "💥 Memory wiping.";
+
+      // Dramatic wipe: one char every 100ms
+      let interval = setInterval(() => {
+        if (pad.value.length > 0) {
+          count=(count+1)%3+1;
+          pad.value = pad.value.slice(0, -1); // remove last character
+          status.textContent = "💥 Memory wiping" + ".".repeat(count);
         } else {
-          status.textContent = `⏰Auto-wiping in ${timeLeft}s`;
+          clearInterval(interval);
+          status.textContent = "💥 Memory wiped.";
+          pad.disabled = false;
+          timeLeft = 10;
         }
-      } else {
-        status.textContent = "⏸️ Frozen — nothing will be forgotten!";
-      }
+      }, 100);
+    } else {
+      status.textContent = `⏰ Auto-wiping in ${timeLeft}s`;
     }
+  } else {
+    status.textContent = "⏸️ Frozen — nothing will be forgotten!";
+  }
+}
+
 
     setInterval(countdown, 1000);
 
